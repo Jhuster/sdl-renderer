@@ -1,0 +1,21 @@
+# Vim temporal files.
+*.swp
+*.swo
+
+.vscode
+.idea
+*.project
+
+*.o
+*.o.d
+
+*.err
+*.log
+*.log
+
+obj
+bin
+out
+output
+
+cmake-build-debug
