@@ -24,10 +24,10 @@ The output files will be export to `output` dir.
 class AudioSource : public SDLRenderer::AudioCallback
 {
 public:
-  	// when the audio driver need audio data, the callback will be triggered
+    // when the audio driver need audio data, the callback will be triggered
     int OnReadAudioData(unsigned char* buffer, int size) override
     {
-		    // you should copy the audio pcm data to the `buffer` with `size` avalable space
+        // you should copy the audio pcm data to the `buffer` with `size` avalable space
         // and return the actual avalable data size
     }
 }
@@ -36,18 +36,18 @@ int main(int argc, char* argv[])
 {
     SDLRenderer::Init();
   
-  	// create sdl renderer
-  	auto renderer = SDLRenderer::CreateSDLRenderer();
+    // create sdl renderer
+    auto renderer = SDLRenderer::CreateSDLRenderer();
   
-  	// create audio player
+    // create audio player
     AudioSource source;
-  	renderer->CreateAudioPlayer(samplerate, channels, format, samples, &source)
+    renderer->CreateAudioPlayer(samplerate, channels, format, samples, &source)
   
- 	  // start audio play, the callback will be triggered later.
+    // start audio play, the callback will be triggered later.
     renderer->SetAudioPlayPaused(false);
   
     // wait for audio playing
-  	while(!gExit);
+    while(!gExit);
   
     // destroy the audio player
     renderer->DestroyAudioPlayer();
@@ -65,11 +65,11 @@ int main(int argc, char* argv[])
 {
     SDLRenderer::Init
       
-		// create sdl renderer
-  	auto renderer = SDLRenderer::CreateSDLRenderer();
+    // create sdl renderer
+    auto renderer = SDLRenderer::CreateSDLRenderer();
   
     // create video player
-  	auto videoPlayer = renderer->CreateVideoPlayer("Window Title", videoWidth, videoHeight, SDLRenderer::VIDEO_FORMAT_IYUV);
+    auto videoPlayer = renderer->CreateVideoPlayer("Window Title", videoWidth, videoHeight, SDLRenderer::VIDEO_FORMAT_IYUV);
     if (videoPlayer == 0) {
         return -1;
     }
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
     VideoSource source;
   
     int size = videoWidth * videoHeight * 3 / 2;
-	  auto* buffer = new unsigned char[size];
+    auto* buffer = new unsigned char[size];
   
     while (!gExit) {
         // read one yuv frame
@@ -90,12 +90,12 @@ int main(int argc, char* argv[])
             break;
         }
         usleep(30 * 1000);
-		}
+    }
   
     // destroy the video player
-	  renderer->DestroyVideoPlayer(videoPlayer);
+    renderer->DestroyVideoPlayer(videoPlayer);
   
-		SDLRenderer::Exit();
+    SDLRenderer::Exit();
   
     return 0;
 }
