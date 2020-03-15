@@ -106,12 +106,12 @@ void SDLRendererImpl::OnReadAudioData(void *userdata, unsigned char *stream, int
     SDL_MixAudio(stream, renderer->_audioBuffer, len, SDL_MIX_MAXVOLUME);
 }
 
-SDLRenderer::SDLVideoRenderer SDLRendererImpl::CreateVideoPlayer(const std::string& title, int width, int height, VideoFormat format) 
+SDLRenderer::SDLVideoRenderer SDLRendererImpl::CreateVideoPlayer(const std::string& title, int windowWidth, int windowHeight) 
 {
     auto renderer = new VideoRenderer();
     
     renderer->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                     width , height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+                                        windowWidth , windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (renderer->window == nullptr) {
         LOGE("[SDLRenderer][%s] failed to create window: %s", __FUNCTION__, SDL_GetError());
         delete renderer;
@@ -125,15 +125,7 @@ SDLRenderer::SDLVideoRenderer SDLRendererImpl::CreateVideoPlayer(const std::stri
         return (SDLVideoRenderer) 0;
     }
 
-    renderer->texture = SDL_CreateTexture(renderer->renderer, SDL2_VIDEO_FORMATS[format], SDL_TEXTUREACCESS_STREAMING,
-                                          width, height);
-    if (renderer->renderer == nullptr) {
-        LOGE("[SDLRenderer][%s] failed to create renderer: %s", __FUNCTION__, SDL_GetError());
-        delete renderer;
-        return (SDLVideoRenderer) 0;
-    }
-
-    LOGI("[SDLRenderer][%s] created %d x %d, format = %d", __FUNCTION__, width, height, format);
+    LOGI("[SDLRenderer][%s] created window: %d x %d", __FUNCTION__, windowWidth, windowHeight);
     
     return (SDLVideoRenderer) renderer;
 }
@@ -145,7 +137,7 @@ void SDLRendererImpl::DestroyVideoPlayer(SDLRenderer::SDLVideoRenderer renderer)
     delete r;
 }
 
-bool SDLRendererImpl::RenderVideoFrame(SDLVideoRenderer renderer, unsigned char *buffer, int width, int height) 
+bool SDLRendererImpl::RenderVideoFrame(SDLVideoRenderer renderer, unsigned char *buffer, int width, int height, VideoFormat format) 
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
@@ -158,6 +150,15 @@ bool SDLRendererImpl::RenderVideoFrame(SDLVideoRenderer renderer, unsigned char 
     if (r == nullptr) {
         LOGE("[SDLRenderer][%s] invalid renderer !", __FUNCTION__);
         return false;
+    }
+
+    if (r->texture == nullptr) {
+        r->texture = SDL_CreateTexture(r->renderer, SDL2_VIDEO_FORMATS[format], SDL_TEXTUREACCESS_STREAMING,
+                                       width, height);
+        if (r->texture == nullptr) {
+            LOGE("[SDLRenderer][%s] failed to create texture: %s", __FUNCTION__, SDL_GetError());
+            return false;
+        }
     }
     
     SDL_UpdateTexture(r->texture, nullptr, buffer, width);

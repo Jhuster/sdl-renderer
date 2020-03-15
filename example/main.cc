@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
     
     VideoFileReader videoReader(parameter.videoFilepath);
     if (videoReader.IsFileOpened()) {
-        auto videoPlayer = renderer->CreateVideoPlayer("Example", parameter.videoWidth, parameter.videoHeight, SDLRenderer::VIDEO_FORMAT_IYUV);
+        auto videoPlayer = renderer->CreateVideoPlayer("Example", parameter.videoWidth, parameter.videoHeight);
         if (videoPlayer == 0) {
             return -1;
         }
@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
             if (!videoReader.ReadFrame(buffer, size)) {
                 continue;
             }
-            if (!renderer->RenderVideoFrame(videoPlayer, buffer, parameter.videoWidth, parameter.videoHeight)) {
+            if (!renderer->RenderVideoFrame(videoPlayer, buffer, parameter.videoWidth, parameter.videoHeight, SDLRenderer::VIDEO_FORMAT_IYUV)) {
                 break;
             }
             usleep(30 * 1000);

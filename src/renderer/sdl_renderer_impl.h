@@ -32,8 +32,8 @@ public:
     void SetAudioPlayPaused(bool paused) override;
     bool DestroyAudioPlayer() override;
 
-    SDLVideoRenderer CreateVideoPlayer(const std::string& title, int width, int height, VideoFormat format) override;
-    bool RenderVideoFrame(SDLVideoRenderer renderer, unsigned char* buffer, int width, int height) override;
+    SDLVideoRenderer CreateVideoPlayer(const std::string& title, int windowWidth, int windowHeight) override;
+    bool RenderVideoFrame(SDLVideoRenderer renderer, unsigned char* buffer, int width, int height, VideoFormat format) override;
     void DestroyVideoPlayer(SDLVideoRenderer renderer) override;
     
 private:

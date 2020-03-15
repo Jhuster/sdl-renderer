@@ -46,8 +46,8 @@ public:
     virtual void SetAudioPlayPaused(bool paused) = 0;
     virtual bool DestroyAudioPlayer() = 0;
 
-    virtual SDLVideoRenderer CreateVideoPlayer(const std::string& title, int width, int height, VideoFormat format) = 0;
-    virtual bool RenderVideoFrame(SDLVideoRenderer renderer, unsigned char* buffer, int width, int height) = 0;
+    virtual SDLVideoRenderer CreateVideoPlayer(const std::string& title, int windowWidth, int windowHeight) = 0;
+    virtual bool RenderVideoFrame(SDLVideoRenderer renderer, unsigned char* buffer, int width, int height, VideoFormat format) = 0;
     virtual void DestroyVideoPlayer(SDLVideoRenderer renderer) = 0;
 };
 
